@@ -8,7 +8,7 @@
  * @big_size: size of the complete array to print.
  * Return: void.
  */
-void sift_down(int array[], int n, int i, int big_size)
+void sift_down(int *array, int n, int i, int big_size)
 {
 	int largest = 0;
 	int l = (2 * (i + 1)) - 1;
