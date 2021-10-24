@@ -23,7 +23,7 @@ void sift_down(int array[], int n, int i, int big_size)
 	{
 		largest = i;
 	}
-	if(array[i] >= array[largest])
+	if (array[i] >= array[largest])
 	{
 		largest = i;
 	}
