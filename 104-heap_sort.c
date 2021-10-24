@@ -40,6 +40,7 @@ void heapify(int array[], int n, int i, int big_size)
 void heap_sort(int *array, size_t size)
 {
 	int tmp = 0;
+
 	for (int i = size / 2 - 1; i >= 0; i--)
 		heapify(array, size, i, size);
 
