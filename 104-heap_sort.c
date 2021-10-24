@@ -10,17 +10,23 @@
  */
 void sift_down(int array[], int n, int i, int big_size)
 {
-	int largest = i;
+	int largest = 0;
 	int l = (2 * (i + 1)) - 1;
 	int r = l + 1;
 	int tmp = 0;
 
-	if (l < n && array[l] > array[largest])
-		largest = l;
-
-	if (r < n && array[r] > array[largest])
+	if (r < n && array[r] > array[l])
 		largest = r;
-
+	else if (l < n)
+		largest = l;
+	else
+	{
+		largest = i;
+	}
+	if(array[i] >= array[largest])
+	{
+		largest = i;
+	}
 	if (largest != i)
 	{
 		tmp = array[i];
