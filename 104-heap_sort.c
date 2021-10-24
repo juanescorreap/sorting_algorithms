@@ -1,5 +1,13 @@
 #include "sort.h"
 
+/**
+ * heapify - Sorts an array on a max heap recursively.
+ * @array: Array to be sorted.
+ * @n: size of the array to heap.
+ * @i: index to star the heap from.
+ * @big_size: size of the complete array to print.
+ * Return: void.
+ */
 void heapify(int array[], int n, int i, int big_size)
 {
 	int largest = i;
@@ -23,6 +31,12 @@ void heapify(int array[], int n, int i, int big_size)
 	}
 }
 
+/**
+ * heap_sort - Sorts an array using the heap sort algorithm.
+ * @array: Array to be sorted.
+ * @size: size of the array.
+ * Return: void.
+ */
 void heap_sort(int *array, size_t size)
 {
 	int tmp = 0;
