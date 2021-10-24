@@ -11,8 +11,8 @@
 void sift_down(int array[], int n, int i, int big_size)
 {
 	int largest = i;
-	int l = 2 * i + 1;
-	int r = 2 * i + 2;
+	int l = (2 * (i + 1)) - 1;
+	int r = l + 1;
 	int tmp = 0;
 
 	if (l < n && array[l] > array[largest])
