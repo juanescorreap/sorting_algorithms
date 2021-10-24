@@ -46,11 +46,14 @@ void sift_down(int *array, int n, int i, int big_size)
 void heap_sort(int *array, size_t size)
 {
 	int tmp = 0;
+	int i = 0;
 
-	for (int i = size / 2 - 1; i >= 0; i--)
+	for (i = size / 2 - 1; i >= 0; i--)
+	{
 		sift_down(array, size, i, size);
+	}
 
-	for (int i = size - 1; i > 0; i--)
+	for (i = size - 1; i > 0; i--)
 	{
 		tmp = array[0];
 		array[0] = array[i];
