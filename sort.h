@@ -1,6 +1,7 @@
 #ifndef _SORTING_H_
 #define _SORTING_H_
 #include <stdio.h>
+#include <stdlib.h>
 
 
 /** Struct Double Linked List */
@@ -33,5 +34,6 @@ void shell_sort(int *array, size_t size);
 void quick_sort_hoare(int *array, size_t size);
 void counting_sort(int *array, size_t size);
 void heap_sort(int *array, size_t size);
+void merge_sort(int *array, size_t size);
 
 #endif
