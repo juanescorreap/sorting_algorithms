@@ -1,10 +1,18 @@
 #include "sort.h"
 
-
-void countSort(int *array, int size, int exp, int *output)
+/**
+ * count_Sort - Sorts an array using the counting sort sort algorithm but
+ * 				using the exp.
+ * @array: Array to be sorted.
+ * @size: size of the array.
+ * @exp: base to use the counting sort (in this case base10)
+ * @output: array to store the counting indexes.
+ * Return: void.
+ */
+void count_Sort(int *array, int size, int exp, int *output)
 {
 	int i;
-	int count[10] = {0,0,0,0,0,0,0,0,0,0};
+	int count[10] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 
 	for (i = 0; i < (int)size; i++)
 		count[(array[i] / exp) % 10]++;
@@ -22,7 +30,12 @@ void countSort(int *array, int size, int exp, int *output)
 		array[i] = output[i];
 }
 
-
+/**
+ * radix_sort - Sorts an array using the radix sort algorithm.
+ * @array: Array to be sorted.
+ * @size: size of the array.
+ * Return: void.
+ */
 void radix_sort(int *array, size_t size)
 {
 	int max = array[0];
@@ -38,7 +51,7 @@ void radix_sort(int *array, size_t size)
 		return;
 	for (exp = 1; max / exp > 0; exp *= 10)
 	{
-		countSort(array, (int)size, exp, output);
+		count_Sort(array, (int)size, exp, output);
 		print_array(array, size);
 	}
 	free(output);
