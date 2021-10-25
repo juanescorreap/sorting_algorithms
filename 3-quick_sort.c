@@ -13,10 +13,15 @@ void swap(int *a, int *b)
 	*b = t;
 }
 /**
- * partition - Function that sorts an array of
- * integers in ascending order using the Quick sort algorithm
+ * partition - Function that takes last element as pivot, places
+ * the pivot element at its correct position in sorted
+ * array, and places all smaller (smaller than pivot)
+ * to left of pivot and all greater elements to right of pivot
  * @array: The Array to be sorted
- * @size: The Size of The Array
+ * @low: Starting index
+ * @high: Ending index
+ * @array1: Array to be sroted (passed twice to be able to print)
+ * @size1: The size of the array (passed to be able to print)
  * Return: Void
  */
 int partition(int *array, int low, int high, int *array1, size_t size1)
@@ -38,10 +43,13 @@ int partition(int *array, int low, int high, int *array1, size_t size1)
 	return (i + 1);
 }
 /**
- * quick_sort - Function that sorts an array of
+ * real_quick_sort - Function that sorts an array of
  * integers in ascending order using the Quick sort algorithm
  * @array: The Array to be sorted
- * @size: The Size of The Array
+ * @low: Starting index
+ * @high: Ending index
+ * @array1: Array to be sroted (passed twice to be able to print)
+ * @size1: The size of the array (passed to be able to print)
  * Return: Void
  */
 void real_quick_sort(int *array, int low, int high, int *array1, size_t size1)
