@@ -38,9 +38,17 @@ void count_Sort(int *array, int size, int exp, int *output)
  */
 void radix_sort(int *array, size_t size)
 {
-	int max = array[0];
+	int max;
 	int i, exp;
 	int *output = NULL;
+
+	if (array == NULL)
+		return;
+	if (size < 2)
+	{
+		return;
+	}
+	max = array[0];
 
 	for (i = 1; i < (int)size; i++)
 		if (array[i] > max)
