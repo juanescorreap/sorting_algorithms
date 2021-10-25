@@ -65,12 +65,12 @@ void cocktail_sort_list(listint_t **list)
 		if (b == 0)
 			c = a;
 		c--;
-		while(current->prev && a >= b)
+		while (current->prev && a >= b)
 		{
 			if (current->n < current->prev->n)
 			{
 				tmp = current->prev;
-				swap_nodes(&(*list), current, current->prev);
+				swap_nodes(&(*list), tmp, tmp->prev);
 				print_list(*list);
 				current = tmp->next;
 			}
