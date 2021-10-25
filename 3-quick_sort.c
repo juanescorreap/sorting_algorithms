@@ -22,8 +22,7 @@ void swap(int *a, int *b)
  * @array: The Array to be sorted
  * @low: Starting index
  * @high: Ending index
- * @array1: Array to be sroted (passed twice to be able to print)
- * @size1: The size of the array (passed to be able to print)
+ * @size: The size of the array (passed to be able to print)
  * Return: Void
  */
 int partition(int *array, int low, int high, size_t size)
@@ -52,8 +51,7 @@ int partition(int *array, int low, int high, size_t size)
  * @array: The Array to be sorted
  * @low: Starting index
  * @high: Ending index
- * @array1: Array to be sroted (passed twice to be able to print)
- * @size1: The size of the array (passed to be able to print)
+ * @size: The size of the array (passed to be able to print)
  * Return: Void
  */
 void real_quick_sort(int *array, int low, int high, size_t size)
