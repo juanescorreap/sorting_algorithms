@@ -1,73 +1,81 @@
 #include "sort.h"
 /**
- * insertion_sort_list - Sorts a doubly linked list of integers in ascending
- * order using the Insertion sort algorithm
- *
+ * swap_nodes - Function that takes two nodes belonging to a
+ * doubly linked list and swaps their positions
+ * @left: First node to be swapped
+ * @right: second node to be swapped
+ * @list: List to which the nodes belong
+ * Return: Void
+ */
+void swap_nodes(listint_t **list, listint_t *left, listint_t *right)
+{
+	listint_t *swapperVector[4];
+
+	swapperVector[0] = left->next;
+	swapperVector[1] = left->prev;
+	swapperVector[2] = right->next;
+	swapperVector[3] = right->prev;
+	if (*list == swapperVector[3])
+	{
+		*list = right;
+	}
+	if (swapperVector[3]->prev)
+	{
+		swapperVector[3]->prev->next = swapperVector[0];
+	}
+	if (right->next)
+	{
+		right->next->prev = swapperVector[3];
+	}
+	swapperVector[3]->next = swapperVector[2];
+	swapperVector[3]->prev = swapperVector[0];
+	right->next = swapperVector[3];
+	right->prev = swapperVector[1];
+}
+/**
+ * cocktail_sort_list - Sorts a doubly linked list of integers in ascending
+ * order using the Cocktail shaker sort algorithm
  * @list: Doubly linked list
  * Return: Void
  */
-#define pointerup(A) A = A->next
-#define pointerdown(A) A = A->prev
-
-void insertion_sort_list(listint_t **list)
+void cocktail_sort_list(listint_t **list)
 {
-	listint_t *right = NULL;
-	listint_t *left = NULL;
-	listint_t *next = NULL;
-	int unordered = 1;
-	listint_t *swapperVector[4];
+	listint_t *current = NULL, *tmp = NULL;
+	int a = 0, b = -1, c = -1;
 
 	if (list == NULL || *list == NULL)
-	{
 		return;
-	}
-	left = *list;
-	right = left->next;
-	while (unordered)
+	current = *list;
+
+	while (c >= b)
 	{
-		unordered = 0;
-		while (right)
+		b++;
+		while (current->next && a != c)
 		{
-			next = right->next;
-
-			if (left->n > right->n)
+			if (current->n > current->next->n)
 			{
-				unordered = 1;
-				swapperVector[0] = left->next;
-				swapperVector[1] = left->prev;
-				swapperVector[2] = right->next;
-				swapperVector[3] = right->prev;
-				if (*list == swapperVector[3])
-				{
-					*list = right;
-				}
-				if (swapperVector[3]->prev)
-				{
-					swapperVector[3]->prev->next = swapperVector[0];
-				}
-				if (right->next)
-				{
-					right->next->prev = swapperVector[3];
-				}
-				swapperVector[3]->next = swapperVector[2];
-				swapperVector[3]->prev = swapperVector[0];
-				right->next = swapperVector[3];
-				right->prev = swapperVector[1];
+				tmp = current;
+				swap_nodes(&(*list), tmp, tmp->next);
 				print_list(*list);
-				if (left)
-					right = left->next;
-				if (!right)
-					break;
+				current = tmp;
 			}
-			right = next;
-			if (right)
-				left = right->prev;
+			a++;
+			current = current->next;
 		}
-		if (right != NULL)
-			unordered = 1;
-
-		right = (*list)->next;
-		if (right)
-			left = right->prev;
+		if (b == 0)
+			c = a;
+		c--;
+		while(current->prev && a >= b)
+		{
+			if (current->n < current->prev->n)
+			{
+				tmp = current->prev;
+				swap_nodes(&(*list), current, current->prev);
+				print_list(*list);
+				current = tmp->next;
+			}
+			a--;
+			current = current->prev;
+		}
 	}
 }
