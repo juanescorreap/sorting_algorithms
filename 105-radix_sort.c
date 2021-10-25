@@ -2,7 +2,7 @@
 
 /**
  * count_Sort - Sorts an array using the counting sort sort algorithm but
- * 				using the exp.
+ * using the exp.
  * @array: Array to be sorted.
  * @size: size of the array.
  * @exp: base to use the counting sort (in this case base10)
