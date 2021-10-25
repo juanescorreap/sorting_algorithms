@@ -8,7 +8,9 @@
  */
 void swap(int *a, int *b)
 {
-	int t = *a;
+	int t;
+
+	t = *a;
 	*a = *b;
 	*b = t;
 }
@@ -24,23 +26,24 @@ void swap(int *a, int *b)
  * @size1: The size of the array (passed to be able to print)
  * Return: Void
  */
-int partition(int *array, int low, int high, int *array1, size_t size1)
+int partition(int *array, int low, int high, size_t size)
 {
 	int pivot = array[high];
-	int i = (low - 1);
-	int j;
+	int i = low - 1, j;
 
 	for (j = low; j <= high - 1; j++)
 	{
 		if (array[j] <= pivot)
 		{
 			i++;
-			swap(&array[i], &array[j]);
+			if (i != j)
+			{
+				swap(&array[i], &array[j]);
+				print_array(array, size);
+			}
 		}
 	}
-	swap(&array[i + 1], &array[high]);
-	print_array(array1, size1);
-	return (i + 1);
+	return (i);
 }
 /**
  * real_quick_sort - Function that sorts an array of
@@ -52,15 +55,15 @@ int partition(int *array, int low, int high, int *array1, size_t size1)
  * @size1: The size of the array (passed to be able to print)
  * Return: Void
  */
-void real_quick_sort(int *array, int low, int high, int *array1, size_t size1)
+void real_quick_sort(int *array, int low, int high, size_t size)
 {
 	int pi;
 
 	if (low < high)
 	{
-		pi = partition(array, low, high, array1, size1);
-		real_quick_sort(array, low, pi - 1, array1, size1);
-		real_quick_sort(array, pi + 1, high, array1, size1);
+		pi = partition(array, low, high, size);
+		real_quick_sort(array, low, pi - 1, size);
+		real_quick_sort(array, pi + 1, high, size);
 	}
 }
 /**
@@ -72,5 +75,5 @@ void real_quick_sort(int *array, int low, int high, int *array1, size_t size1)
  */
 void quick_sort(int *array, size_t size)
 {
-	real_quick_sort(array, 0, size - 1, array, size);
+	real_quick_sort(array, 0, size - 1, size);
 }
