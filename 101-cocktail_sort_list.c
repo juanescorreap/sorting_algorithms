@@ -7,30 +7,29 @@
  * @list: List to which the nodes belong
  * Return: Void
  */
-void swap_nodes(listint_t **list, listint_t *left, listint_t *right)
+void swap_nodes(listint_t **list, listint_t **node)
 {
-	listint_t *swapperVector[4];
+	listint_t *pt = *node, *pt1, *pt2;
 
-	swapperVector[0] = left->next;
-	swapperVector[1] = left->prev;
-	swapperVector[2] = right->next;
-	swapperVector[3] = right->prev;
-	if (*list == swapperVector[3])
-	{
-		*list = right;
-	}
-	if (swapperVector[3]->prev)
-	{
-		swapperVector[3]->prev->next = swapperVector[0];
-	}
-	if (right->next)
-	{
-		right->next->prev = swapperVector[3];
-	}
-	swapperVector[3]->next = swapperVector[2];
-	swapperVector[3]->prev = swapperVector[0];
-	right->next = swapperVector[3];
-	right->prev = swapperVector[1];
+	if (!(*node)->prev)
+		*list = (*node)->next;
+
+	pt = pt2 = *node;
+	pt1 = pt->next;
+
+	pt->next = pt1->next;
+	pt2 = pt->prev;
+	pt->prev = pt1;
+	pt1->next = pt;
+	pt1->prev = pt2;
+
+	if (pt1->prev)
+		pt1->prev->next = pt1;
+
+	if(pt->next)
+		pt->next->prev = pt;
+
+	*node = pt1;
 }
 /**
  * cocktail_sort_list - Sorts a doubly linked list of integers in ascending
@@ -40,7 +39,7 @@ void swap_nodes(listint_t **list, listint_t *left, listint_t *right)
  */
 void cocktail_sort_list(listint_t **list)
 {
-	listint_t *current = NULL, *tmp = NULL;
+	listint_t *current, *tmp;
 	int a = 0, b = -1, c = -1;
 
 	if (list == NULL || *list == NULL)
@@ -55,7 +54,7 @@ void cocktail_sort_list(listint_t **list)
 			if (current->n > current->next->n)
 			{
 				tmp = current;
-				swap_nodes(&(*list), tmp, tmp->next);
+				swap_nodes(list, &tmp);
 				print_list(*list);
 				current = tmp;
 			}
@@ -70,7 +69,7 @@ void cocktail_sort_list(listint_t **list)
 			if (current->n < current->prev->n)
 			{
 				tmp = current->prev;
-				swap_nodes(&(*list), tmp, tmp->prev);
+				swap_nodes(list, &tmp);
 				print_list(*list);
 				current = tmp->next;
 			}
