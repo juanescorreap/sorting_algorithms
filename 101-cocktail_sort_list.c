@@ -2,8 +2,7 @@
 /**
  * swap_nodes - Function that takes two nodes belonging to a
  * doubly linked list and swaps their positions
- * @left: First node to be swapped
- * @right: second node to be swapped
+ * @node: base node to be swapped
  * @list: List to which the nodes belong
  * Return: Void
  */
@@ -26,7 +25,7 @@ void swap_nodes(listint_t **list, listint_t **node)
 	if (pt1->prev)
 		pt1->prev->next = pt1;
 
-	if(pt->next)
+	if (pt->next)
 		pt->next->prev = pt;
 
 	*node = pt1;
