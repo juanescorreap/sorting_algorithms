@@ -56,13 +56,16 @@ typedef struct converter
 	unsigned int value;
 } converter_t;
 
+
 void print_deck(const deck_node_t *deck);
 void sort_deck(deck_node_t **deck);
 void swap(deck_node_t *A, deck_node_t *B, deck_node_t **deck);
-deck_node_t *get_dnodeint_at_index(deck_node_t *head, unsigned int index);
 int get_value_at_index(deck_node_t **deck, unsigned int index);
 int get_kind_at_index(deck_node_t *head, unsigned int index);
 unsigned int is_bigger(deck_node_t **deck, int first_index, int second_index);
 int get_index(deck_node_t *node, deck_node_t **deck);
+deck_node_t *get_dnodeint_at_index(deck_node_t *head, unsigned int index);
+
+
 
 #endif

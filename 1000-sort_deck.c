@@ -24,28 +24,20 @@ int get_index(deck_node_t *node, deck_node_t **deck)
 }
 
 /**
- * areTheyNeighbours - check if neighbours
- * @A:node A
- * @B:node B
- * Return: 1 or 0
+ * get_dnodeint_at_index - get node by index
+ * @head:list
+ * @index:index of element
+ * Return: element by index
  */
-int areTheyNeighbours(deck_node_t *A, deck_node_t *B)
+deck_node_t *get_dnodeint_at_index(deck_node_t *head, unsigned int index)
 {
-	return ((A->next == B && B->prev == A) || (A->prev == B && B->next == A));
-}
+	unsigned int c;
 
-/**
- * refreshOuterPointers - refreshes null
- * @A:node A
- * Return: void
- */
-void refreshOuterPointers(deck_node_t *A)
-{
-	if (A->prev != NULL)
-		A->prev->next = A;
-
-	if (A->next != NULL)
-		A->next->prev = A;
+	for (c = 0; c < index && head->next; c++)
+		head = head->next;
+	if (c < index)
+		return (NULL);
+	return (head);
 }
 
 /**
@@ -68,7 +60,7 @@ void swap(deck_node_t *A, deck_node_t *B, deck_node_t **deck)
 		temp = A, A = B, B = temp;
 	swapperVector[0] = A->prev, swapperVector[1] = B->prev;
 	swapperVector[2] = A->next, swapperVector[3] = B->next;
-	if (areTheyNeighbours(A, B))
+	if ((A->next == B && B->prev == A) || (A->prev == B && B->next == A))
 	{	A->prev = swapperVector[2], B->prev = swapperVector[0];
 		A->next = swapperVector[3],	B->next = swapperVector[1];
 		if (swapperVector[0] != NULL)
@@ -99,41 +91,6 @@ void swap(deck_node_t *A, deck_node_t *B, deck_node_t **deck)
 		*deck = B;
 }
 
-/**
- * get_dnodeint_at_index - get node by index
- * @head:list
- * @index:index of element
- * Return: element by index
- */
-deck_node_t *get_dnodeint_at_index(deck_node_t *head, unsigned int index)
-{
-	unsigned int c;
-
-	for (c = 0; c < index && head->next; c++)
-		head = head->next;
-	if (c < index)
-		return (NULL);
-	return (head);
-}
-
-/**
- * get_kind_at_index - get kind at node by index
- * @head:list
- * @index:index of element
- * Return: kind of the card
- */
-int get_kind_at_index(deck_node_t *head, unsigned int index)
-{
-	unsigned int c;
-	int kinds[4] = {0, 1, 2, 3};
-
-	for (c = 0; c < index && head->next; c++)
-		head = head->next;
-	if (c < index)
-		return (0);
-
-	return (kinds[head->card->kind]);
-}
 
 /**
  * get_value_at_index - get value at node by index
@@ -145,10 +102,24 @@ int get_value_at_index(deck_node_t **deck, unsigned int index)
 {
 	int i;
 	deck_node_t *first;
+	deck_node_t **tmp = deck;
 	int value, kind;
+	unsigned int c;
+	int kinds[4] = {0, 1, 2, 3};
 
-	first = get_dnodeint_at_index(*deck, index);
-	kind = get_kind_at_index(*deck, index);
+	for (c = 0; c < index && deck[0]->next; c++)
+		deck = &(deck[0]->next);
+	if (c < index)
+		first = NULL;
+	first = deck[0];
+	/*first = get_dnodeint_at_index(*deck, index);*/
+
+	for (c = 0; c < index && tmp[0]->next; c++)
+		tmp = &(tmp[0]->next);
+	if (c < index)
+		kind = 0;
+	kind = (kinds[tmp[0]->card->kind]);
+	/*kind = get_kind_at_index(*deck, index);*/
 
 	converter_t converter_number[] = {
 		{"Ace", 1},
