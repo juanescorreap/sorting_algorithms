@@ -3,12 +3,19 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+/**
+ * enum kind_e - kind of card
+ * @SPADE: spade type
+ * @HEART: spade type
+ * @CLUB: spade type
+ * @DIAMOND: spade type
+ */
 typedef enum kind_e
 {
-    SPADE = 0,
-    HEART,
-    CLUB,
-    DIAMOND
+	SPADE = 0,
+	HEART = 1,
+	CLUB = 2,
+	DIAMOND = 3
 } kind_t;
 
 /**
@@ -20,8 +27,8 @@ typedef enum kind_e
  */
 typedef struct card_s
 {
-    const char *value;
-    const kind_t kind;
+	const char *value;
+	const kind_t kind;
 } card_t;
 
 /**
@@ -33,9 +40,9 @@ typedef struct card_s
  */
 typedef struct deck_node_s
 {
-    const card_t *card;
-    struct deck_node_s *prev;
-    struct deck_node_s *next;
+	const card_t *card;
+	struct deck_node_s *prev;
+	struct deck_node_s *next;
 } deck_node_t;
 
 /**
@@ -49,6 +56,13 @@ typedef struct converter
 	unsigned int value;
 } converter_t;
 
+void print_deck(const deck_node_t *deck);
 void sort_deck(deck_node_t **deck);
+void swap(deck_node_t *A, deck_node_t *B, deck_node_t **deck);
+deck_node_t *get_dnodeint_at_index(deck_node_t *head, unsigned int index);
+int get_value_at_index(deck_node_t **deck, unsigned int index);
+int get_kind_at_index(deck_node_t *head, unsigned int index);
+unsigned int is_bigger(deck_node_t **deck, int first_index, int second_index);
+int get_index(deck_node_t *node, deck_node_t **deck);
 
 #endif

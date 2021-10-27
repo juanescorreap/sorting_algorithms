@@ -1,13 +1,157 @@
 #include "deck.h"
 #include <string.h>
 
-unsigned int is_bigger(deck_node_t *first, deck_node_t *second)
+/**
+ * get_index - get index of the node
+ * @node:node to get index
+ * @deck:deck
+ * Return: index
+ */
+int get_index(deck_node_t *node, deck_node_t **deck)
 {
-    int i;
-    unsigned int value_first, value_second;
+	int i;
+	deck_node_t **tmp = deck;
 
-    converter_t converter_number[] = {
-		{"1", 1},
+	for (i = 0; tmp; i++)
+	{
+		if (tmp[0] == node)
+		{
+			return (i);
+		}
+		tmp = &(tmp[0]->next);
+	}
+	return (0);
+}
+
+/**
+ * areTheyNeighbours - check if neighbours
+ * @A:node A
+ * @B:node B
+ * Return: 1 or 0
+ */
+int areTheyNeighbours(deck_node_t *A, deck_node_t *B)
+{
+	return ((A->next == B && B->prev == A) || (A->prev == B && B->next == A));
+}
+
+/**
+ * refreshOuterPointers - refreshes null
+ * @A:node A
+ * Return: void
+ */
+void refreshOuterPointers(deck_node_t *A)
+{
+	if (A->prev != NULL)
+		A->prev->next = A;
+
+	if (A->next != NULL)
+		A->next->prev = A;
+}
+
+/**
+ * swap - swap nodes
+ * @A:node A
+ * @B:node b
+ * @deck:deck
+ * Return: void
+ */
+void swap(deck_node_t *A, deck_node_t *B, deck_node_t **deck)
+{
+	deck_node_t *swapperVector[4];
+	deck_node_t *temp;
+	int index_A, index_B;
+
+	index_A = get_index(A, deck), index_B = get_index(B, deck);
+	if (A == B)
+		return;
+	if (index_B < index_A)
+		temp = A, A = B, B = temp;
+	swapperVector[0] = A->prev, swapperVector[1] = B->prev;
+	swapperVector[2] = A->next, swapperVector[3] = B->next;
+	if (areTheyNeighbours(A, B))
+	{	A->prev = swapperVector[2], B->prev = swapperVector[0];
+		A->next = swapperVector[3],	B->next = swapperVector[1];
+		if (swapperVector[0] != NULL)
+			swapperVector[0]->next = B;
+		if (swapperVector[3] != NULL)
+			swapperVector[3]->prev = A;
+	}
+	else
+	{	A->prev = swapperVector[1], B->prev = swapperVector[0];
+		A->next = swapperVector[3],	B->next = swapperVector[2];
+		if (swapperVector[2] == swapperVector[1])
+		{	swapperVector[2]->prev = B, swapperVector[3]->prev = A;
+			swapperVector[2]->next = A;
+			if (swapperVector[0] != NULL)
+				swapperVector[0]->next = B;
+			if (swapperVector[3] != NULL)
+				swapperVector[3]->prev = A;
+		}
+		else
+		{	swapperVector[2]->prev = B,	swapperVector[1]->next = A;
+			if (swapperVector[0] != NULL)
+				swapperVector[0]->next = B;
+			if (swapperVector[3] != NULL)
+				swapperVector[3]->prev = A;
+		}
+	}
+	if (*deck == A)
+		*deck = B;
+}
+
+/**
+ * get_dnodeint_at_index - get node by index
+ * @head:list
+ * @index:index of element
+ * Return: element by index
+ */
+deck_node_t *get_dnodeint_at_index(deck_node_t *head, unsigned int index)
+{
+	unsigned int c;
+
+	for (c = 0; c < index && head->next; c++)
+		head = head->next;
+	if (c < index)
+		return (NULL);
+	return (head);
+}
+
+/**
+ * get_kind_at_index - get kind at node by index
+ * @head:list
+ * @index:index of element
+ * Return: kind of the card
+ */
+int get_kind_at_index(deck_node_t *head, unsigned int index)
+{
+	unsigned int c;
+	int kinds[4] = {0, 1, 2, 3};
+
+	for (c = 0; c < index && head->next; c++)
+		head = head->next;
+	if (c < index)
+		return (0);
+
+	return (kinds[head->card->kind]);
+}
+
+/**
+ * get_value_at_index - get value at node by index
+ * @deck:list
+ * @index:index of element
+ * Return: value of the card
+ */
+int get_value_at_index(deck_node_t **deck, unsigned int index)
+{
+	int i;
+	deck_node_t *first;
+	int value, kind;
+
+	first = get_dnodeint_at_index(*deck, index);
+	kind = get_kind_at_index(*deck, index);
+
+	converter_t converter_number[] = {
+		{"Ace", 1},
 		{"2", 2},
 		{"3", 3},
 		{"4", 4},
@@ -18,129 +162,83 @@ unsigned int is_bigger(deck_node_t *first, deck_node_t *second)
 		{"9", 9},
 		{"10", 10},
 		{"Jack", 11},
-		{"Quen", 12},
+		{"Queen", 12},
 		{"King", 13},
 		{0, 14}};
 
-    for (i = 0; converter_number[i].value < 14; i++)
+	for (i = 0; converter_number[i].value < 14; i++)
 	{
-        printf("esto imprime");
-        printf("\n");
-        printf("%s carta", first->card->value);
-        printf("\n");
 		if (strcmp(converter_number[i].character, first->card->value) == 0)
-        {
-			value_first = (converter_number[i].value);
-        }
-        printf("esto no");
-        printf("\n");
-	}
-    for (i = 0; converter_number[i].value < 14; i++)
-	{
-		if (strcmp(converter_number[i].character, second->card->value) == 0)
-			value_second = (converter_number[i].value);
+		{
+			value = (converter_number[i].value);
+			break;
+		}
 	}
 
-
-
-    if (first->card->kind > second->card->kind)
-    {
-        return (1);
-    }
-    if (first->card->kind == second->card->kind)
-    {
-        if (value_first > value_second)
-            return (1);
-        else
-            return (0);
-    }
-    
-	return (0);
+	return (value + (13 * kind));
 }
 
-
 /**
- * swap_nodes - Function that takes two nodes belonging to a
- * doubly linked deck and swaps their positions
- * @left: First node to be swapped
- * @right: second node to be swapped
- * @deck: deck to which the nodes belong
- * Return: Void
+ * partition - Partition an array and using pivot
+ * @deck: Array
+ * @low: int
+ * @high: int
+ * Return: index of pivote (int)
  */
-void swap_nodes(deck_node_t **deck, deck_node_t *left, deck_node_t *right)
+int partition(deck_node_t **deck, int low, int high)
 {
-	deck_node_t *swapperVector[4];
+	int pivot = get_value_at_index(deck, high);
+	int i = low, j = high;
 
-	swapperVector[0] = left->next;
-	swapperVector[1] = left->prev;
-	swapperVector[2] = right->next;
-	swapperVector[3] = right->prev;
-	if (*deck == swapperVector[3])
+	while (1)
 	{
-		*deck = right;
+		while (get_value_at_index(deck, i) < pivot)
+			i++;
+		while (get_value_at_index(deck, j) > pivot)
+			j--;
+
+		if (i < j)
+		{
+			swap(get_dnodeint_at_index(*deck, i), get_dnodeint_at_index(*deck, j), deck);
+			i++;
+			j--;
+		}
+		else
+		{
+			if (i != j)
+				return (j);
+			return (j - 1);
+		}
 	}
-	if (swapperVector[3]->prev)
-	{
-		swapperVector[3]->prev->next = swapperVector[0];
-	}
-	if (right->next)
-	{
-		right->next->prev = swapperVector[3];
-	}
-	swapperVector[3]->next = swapperVector[2];
-	swapperVector[3]->prev = swapperVector[0];
-	right->next = swapperVector[3];
-	right->prev = swapperVector[1];
 }
 /**
- * sift_down - Sorts an array on a max heap recursively.
- * @array: Array to be sorted.
- * @n: size of the array to heap.
- * @i: index to star the heap from.
- * Return: void.
+ * hoare_qsort - Sorting Recursively an deck
+ * @deck: Array to be sorted
+ * @low: The lowest value of the array
+ * @high: highest value of the array
+ * @size: Size of The Array
+ * Return: void
  */
-void sift_down(deck_node_t **deck, int n, int i)
-{
-	int largest = 0;
-	int l = (2 * (i + 1)) - 1;
-	int r = l + 1;
-
-	if (r < n && is_bigger(deck[r], deck[l]))
-		largest = r;
-	else if (l < n && is_bigger(deck[l], deck[r]))
-		largest = l;
-	else
-	{
-		largest = i;
-	}
-	if (is_bigger(deck[i], deck[largest]))
-	{
-		largest = i;
-	}
-	if (largest != i)
-	{
-		swap_nodes(deck, deck[i], deck[largest]);
-		sift_down(deck, n, largest);
-	}
-}
-
-/**
- * sort_deck - Sorts an array using the heap sort algorithm.
- * @deck: deck to be sorted.
- * Return: void.
- */
-void sort_deck(deck_node_t **deck)
+void hoare_qsort(deck_node_t **deck, int low, int high, int size)
 {
 	int i;
 
-	for (i = 52 / 2 - 1; i >= 0; i--)
+	if (low < high)
 	{
-		sift_down(deck, 52, i);
+		i = partition(deck, low, high);
+		if (i > low)
+			hoare_qsort(deck, low, i, size);
+		hoare_qsort(deck, i + 1, high, size);
 	}
-
-	for (i = 52 - 1; i > 0; i--)
-	{
-		swap_nodes(deck, deck[0], deck[i]);
-		sift_down(deck, i, 0);
-	}
+}
+/**
+ * sort_deck - Quick Sort Algorithm using hoare partition
+ * @deck: Array to sort
+ * Return: Sorted Array (void)
+ */
+void sort_deck(deck_node_t **deck)
+{
+	if (deck == NULL || 52 < 2)
+		return;
+	hoare_qsort(deck, 0, 52 - 1, 52);
 }
